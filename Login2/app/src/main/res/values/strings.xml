@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Login em aplicação </string>
+    <string name="title_activity_conta">Criar Conta</string>
+    <string name="title_activity_tela_principal">Bem Vindo ao Aplicativo</string>
+</resources>
