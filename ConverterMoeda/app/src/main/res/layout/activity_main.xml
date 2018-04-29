@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <RadioGroup
+            android:id="@+id/rdOpcao"
+            android:layout_width="match_parent"
+            android:layout_height="112dp">
+
+            <RadioButton
+                android:id="@+id/rbOpcao1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:onClick="onRadioButtonClicked"
+                android:text="Real x Dóllar" />
+
+            <RadioButton
+                android:id="@+id/rbOpcao2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onRadioButtonClicked"
+                android:text="Real x Euro" />
+
+            <RadioButton
+                android:id="@+id/rbOpcao3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onRadioButtonClicked"
+                android:text="Euro x Dóllar" />
+
+        </RadioGroup>
+
+    <TextView
+        android:id="@+id/txtEntrada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Real" />
+
+    <EditText
+        android:id="@+id/edtValor1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/txtResultado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dóllar" />
+
+    <EditText
+        android:id="@+id/edtValor2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/btnConverter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_name" />
+
+
+
+</LinearLayout>
+
+
+
