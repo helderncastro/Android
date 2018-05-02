@@ -11,8 +11,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="35dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -32,8 +32,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
             android:hint="Informe o seu e-mail"
+            android:inputType="textPersonName"
             tools:layout_editor_absoluteX="85dp"
             tools:layout_editor_absoluteY="78dp" />
 
@@ -42,8 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Informe a sua senha"/>
+            android:hint="Informe a sua senha"
+            android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/btnEntrar"
@@ -51,24 +51,14 @@
             android:layout_height="wrap_content"
             android:text="Entrar" />
 
-        <Button
-            android:id="@+id/btnFacebook"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Acessar com Facebook" />
 
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:onClick="chamaCadastro"
-            android:text="Não possui uma conta? "
-            android:textAlignment="center"
-            android:textIsSelectable="true"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp" />
 
     </LinearLayout>
 

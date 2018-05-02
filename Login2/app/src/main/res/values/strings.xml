@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Login em aplicação </string>
     <string name="title_activity_conta">Criar Conta</string>
-    <string name="title_activity_tela_principal">Bem Vindo ao Aplicativo</string>
+    <string name="title_activity_tela_principal">Bem Vindo ao Aplicativo - Login </string>
+    <string name="facebook_app_id">110196133159172</string>
+    <string name="fb_login_protocol_scheme">fb110196133159172</string>
+    <string name="foto_do_perfil">Foto do perfil</string>
+    <string name="sair"><u>Sair</u></string>
 </resources>

@@ -3,6 +3,7 @@ package com.example.helder.login;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.support.v7.app.AlertDialog;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -19,6 +21,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,26 +40,80 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressDialog progressDialog;
     static String TAG = MainActivity.class.getName();
+    private TextView info;
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
+
+    SharedPreferences preferences;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-   //Toast.makeText(getBaseContext(),sucesso,Toast.LENGTH_SHORT).show();
 
+        checkUserSession();
+
+        info = findViewById(R.id.info);
+        loginButton = findViewById(R.id.login_button);
+
+        callbackManager = CallbackManager.Factory.create();
+
+        loginButton.setReadPermissions("email");
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                getUserDetails(loginResult);
+                Log.d(TAG, "Login realizado com sucesso");
+            }
+
+            @Override
+            public void onCancel() {
+
+                info.setText("Login Cancelado.");
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+
+                info.setText("Login Falhou.");
+            }
+        });
+
+
+            // Botão de Login local ==========================================
         final Button btnEntrar = findViewById(R.id.btnEntrar);
 
         btnEntrar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 makePostCall();
             }
         });
 
-        final Button btnFacebook = findViewById(R.id.btnFacebook);
+
 
     }
+
+    /*
+     * Verifica se a sessão do usuário está iniciada. Em caso positivo direciona o usuário para a activity UserProfileActivity
+     */
+
+    private void checkUserSession() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences("USER_DATA", MODE_PRIVATE);
+
+        if(sharedPreferences.contains("LOGIN_SESSION")){
+
+            Log.d(TAG, "O usário já está logado, direcionando ele para a UserProfileActivity");
+
+            Intent intent = new Intent(MainActivity.this, TelaPrincipal.class);
+            startActivity(intent);
+        }
+    }
+
 
 
 
@@ -106,15 +169,14 @@ public class MainActivity extends AppCompatActivity {
                         //Toast.makeText(getBaseContext(),sucesso,Toast.LENGTH_SHORT).show();
 
                         if (sucesso.equals("true")) {
-                            String nomeUserCadastrado = response.optString("userName");
+                            String nomeUsuario = response.optString("userName");
                             String emailCadastrado = response.optString("email");
 
 
                             Intent intent = new Intent(MainActivity.this, TelaPrincipal.class);
 
-                            intent.putExtra("nomeCapturado",nomeUserCadastrado);
-
-
+                            intent.putExtra("nomeUsuario",nomeUsuario);
+                            intent.putExtra("emailUsuario",emailCadastrado);
 
                             startActivity(intent);
 
@@ -180,5 +242,38 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    /*
+     * Recupera os dados do usuário no Facebook e os envia para uma nova Activity via Intent
+     * @param loginResult objeto contendo os dados retornados pelo login
+     */
+    protected void getUserDetails(LoginResult loginResult) {
+
+        GraphRequest data_request = GraphRequest.newMeRequest(
+                loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(
+                            JSONObject json_object,
+                            GraphResponse response) {
+                        Intent intent = new Intent(MainActivity.this, TelaPrincipal.class);
+                        intent.putExtra("userProfile", json_object.toString());
+                        startActivity(intent);
+                    }
+
+                });
+
+        Bundle permission_param = new Bundle();
+        permission_param.putString("fields", "id,name,email,picture.width(240).height(240)");
+        data_request.setParameters(permission_param);
+        data_request.executeAsync();
+    }
 
 }
